@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="studentpage.css">
+    <title>student</title>
+    <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js">
+    </script>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="logo.jpg" alt="logo 30x30" width="30" height="30">
+                MVGRCE(A)</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link text-dark bg-light" href="index.html">LogOut</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="cin">
+
+        <div class="leftcontainer ml-0">
+            <ul class="nav flex-column">
+                <li class="nav-item details">
+                    <a class="nav-link hoverlink" id="profile" href="#" onclick="show_profile()">Profile</a>
+                </li>
+                <li class="nav-item details">
+                    <a class="nav-link hoverlink" id="scan" href="#" onclick="show_qr()">Scan the QR</a>
+                </li>
+                <li class="nav-item details">
+                    <a class="nav-link hoverlink" href="#">Attendance</a>
+                </li>
+                <li class="nav-item details">
+                    <a class="nav-link hoverlink">Condonation Status</a>
+                </li>
+            </ul>
+        </div>
+        <div class="gello" id="result">
+            <div class="matter d-none" id="profiletable">
+                <table class="table table-bordered table-dark">
+                    <tbody>
+
+                        <tr>
+                            <th scope="col">Name</th>
+                            <td scope="row">charan</td>
+                        </tr>
+                        <tr>
+                            <th scope="col">Email</th>
+                            <td scope="row">devadeepkolla211@gmail.com</td>
+                        </tr>
+                        <tr>
+                            <th scope="col">Phno.</th>
+
+                            <td scope="row">7416922489</td>
+                        </tr>
+                        <tr>
+                            <th scope="col">Registration number</th>
+                            <td scope="row">20331A0587</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="preview_scanner d-none" id="qrscandisplay">
+
+                <video id="preview" autoplay="autoplay" class="active"
+                    style="transform: scaleX(-1);height: 260px;/* width: 50vw; */"></video>
+                <div id="result"></div>
+
+            </div>
+            <div class="stop_scan d-none" id="stop_scan_btn">
+                <button class="btn " id="stopbtn" onclick="stop_function()">stop scan</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <!--for the qr-->
+    <!-- <script src="./node_modules/html5-qrcode/html5-qrcode.min.js"></script> -->
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script> -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+    <!-- <script>
+        // When scan is successful fucntion will produce data
+        function onScanSuccess(qrCodeMessage) {
+            document.getElementById("result1").innerHTML =
+                '<span class="result1">' + qrCodeMessage + "</span>";
+        }
+
+        // When scan is unsuccessful fucntion will produce error message
+        function onScanError(errorMessage) {
+            // Handle Scan Error
+        }
+
+        // Setting up Qr Scanner properties
+        var html5QrCodeScanner = new Html5QrcodeScanner("reader", {
+            fps: 10,
+            qrbox: 450
+        });
+
+        // in
+        html5QrCodeScanner.render(onScanSuccess, onScanError);
+    </script> -->
+    <script type="text/javascript">
+        let opts = {
+  // Whether to scan continuously for QR codes. If false, use scanner.scan() to manually scan.
+  // If true, the scanner emits the "scan" event when a QR code is scanned. Default true.
+  continuous: true,
+  
+  // The HTML element to use for the camera's video preview. Must be a <video> element.
+  // When the camera is active, this element will have the "active" CSS class, otherwise,
+  // it will have the "inactive" class. By default, an invisible element will be created to
+  // host the video.
+  video: document.getElementById('preview'),
+  
+  // Whether to horizontally mirror the video preview. This is helpful when trying to
+  // scan a QR code with a user-facing camera. Default true.
+  mirror: true,
+  
+  // Whether to include the scanned image data as part of the scan result. See the "scan" event
+  // for image format details. Default false.
+  captureImage: false,
+  
+  // Only applies to continuous mode. Whether to actively scan when the tab is not active.
+  // When false, this reduces CPU usage when the tab is not active. Default true.
+  backgroundScan: true,
+  
+  // Only applies to continuous mode. The period, in milliseconds, before the same QR code
+  // will be recognized in succession. Default 5000 (5 seconds).
+  refractoryPeriod: 5000,
+  
+  // Only applies to continuous mode. The period, in rendered frames, between scans. A lower scan period
+  // increases CPU usage but makes scan response faster. Default 1 (i.e. analyze every frame).
+  scanPeriod: 1
+};
+         let scanner = new Instascan.Scanner(opts);
+        scanner.addListener('scan', function (content) {
+            console.log(content);
+        });
+        // let scanner = new Instascan.Scanner(opts);
+        scanner.addListener('scan', function (content) {
+            console.log(content);
+            //QRcodigo.set(content);
+            scanner.stop();
+        });
+        Instascan.Camera.getCameras().then(function (cameras) {
+            if (cameras.length > 0) {
+                scanner.start(cameras[cameras.length-1]);
+            } else {
+                console.error('No cameras found.');
+            }
+        }).catch(function (e) {
+            console.error(e);
+        });
+
+        scanner.addListener('scan', function (c) {
+            // document.getElementById("ffid").value = c;
+            // document.forms[0].submit();
+            document.getElementById('result').innerHTML = "successfull scan"
+
+        });
+    </script>
+
+
+
+
+    <script>
+        function show_profile() {
+            scanner.stop();
+            a = document.getElementById('profiletable');
+            b = document.getElementById('qrscandisplay');
+            c = document.getElementById('stop_scan_btn')
+            if (a.style.display == 'none' && b.style.display == 'none') {
+                a.classList.remove('d-none');
+                c.classList.add('d-none');
+
+            } else {
+                b.classList.add('d-none');
+                a.classList.remove('d-none');
+                c.classList.add('d-none');
+                // qr.scanner.stop();
+            }
+
+
+        }
+
+
+
+
+        function show_qr() {
+            scanner.start();
+            let a, b, c
+            a = document.getElementById('profiletable')
+            b = document.getElementById('qrscandisplay')
+            c = document.getElementById('stop_scan_btn')
+            if (b.style.display == 'none' && a.style.display == 'none') {
+
+                b.classList.remove('d-none')
+                c.classList.remove('d-none')
+
+            } else {
+                a.classList.add('d-none')
+                b.classList.remove('d-none')
+                c.classList.remove('d-none')
+            }
+        }
+
+
+
+        function stop_function() {
+            scanner.stop();
+
+        }
+    </script>
+</body>
+
+</html>
